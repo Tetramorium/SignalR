@@ -8,15 +8,19 @@ namespace SignalRMultiplayerGame.Model
 {
     public class Keyboard
     {
+        [JsonProperty("PlayerId")]
+        public int PlayerId { get; set; }
         [JsonProperty("PlayerName")]
         public string PlayerName { get; set; }
-        [JsonProperty("prevW")]
+        [JsonProperty("PrevW")]
         public bool PrevW { get; set; }
-        [JsonProperty("prevA")]
+        [JsonProperty("PrevA")]
         public bool PrevA { get; set; }
-        [JsonProperty("prevS")]
+        [JsonProperty("PrevS")]
         public bool PrevS { get; set; }
-        [JsonProperty("prevD")]
+        [JsonProperty("PrevD")]
         public bool PrevD { get; set; }
+        [JsonProperty("PrevSpacebar")]
+        public bool PrevSpacebar { get; set; }
     }
 }

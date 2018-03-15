@@ -14,7 +14,7 @@ namespace SignalRMultiplayerGame.Controller
         // Singleton instance
         private readonly static Lazy<GameLoop> _instance = new Lazy<GameLoop>(() => new GameLoop(GlobalHost.ConnectionManager.GetHubContext<MultiplayerGameHub>().Clients));
 
-        private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(1000/60);
+        private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(1000 / 60);
 
         private World world { get; set; }
 
@@ -50,17 +50,39 @@ namespace SignalRMultiplayerGame.Controller
 
         private void UpdateWorld(object state)
         {
-            foreach (Player p in world.playerList)
-            {
-                p.Update();
-            }
+            // Check if players exist
 
-            BroadcastWorld();
+            if (world.PlayerList.Count != 0)
+            {
+                foreach (Player p in world.PlayerList)
+                {
+                    p.Update(world);
+                }
+
+                List<Projectile> toRemove = new List<Projectile>();
+
+                foreach (Projectile p in world.ProjectileList)
+                {
+                    p.Update(world);
+
+                    if (p.Status == 15)
+                    {
+                        toRemove.Add(p);
+                    }
+                }
+
+                foreach (Projectile p in toRemove)
+                {
+                    world.ProjectileList.Remove(p);
+                }
+
+                BroadcastWorld();
+            }
         }
 
         private void BroadcastWorld()
         {
-            world.playerList = world.playerList.OrderBy(e => e.Location.Y).ToList();
+            world.PlayerList = world.PlayerList.OrderBy(e => e.Location.Y).ToList();
             Clients.All.updateWorld(world);
         }
 

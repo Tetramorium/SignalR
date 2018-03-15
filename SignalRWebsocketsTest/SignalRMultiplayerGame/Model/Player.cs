@@ -7,28 +7,43 @@ using Newtonsoft.Json;
 
 namespace SignalRMultiplayerGame.Model
 {
-    public class Player
+    public class Player : Entity
     {
         static int count = 0;
+        public int PlayerId { get; set; }
 
         public string PlayerName { get; set; }
-        public Vector2D  Location { get; set; }
-        public Vector2D Velocity { get; set; }
-        public int Direction { get; set; }
-        public int Id { get; set; }
+        public int ReloadTimer { get; set; }
 
-        public Player()
+        public bool isShooting;
+
+        public Player(string _PlayerName, Vector2D _Location, Vector2D _Velocity, Vector2D _Direction)
+            : base(_Location, _Velocity, _Direction)
         {
-            Id = count;
-            this.Velocity = new Vector2D(0, 0);
+            this.PlayerName = _PlayerName;
+            this.PlayerId = count;
             count++;
         }
 
-        public void Update()
+        public override void Update(World _world)
         {
             this.Location += Velocity;
-        }
 
+            if (ReloadTimer < 100)
+            {
+                ReloadTimer++;
+            }
+
+            if (isShooting && ReloadTimer == 100)
+            {
+                _world.ProjectileList.Add(new Projectile(Projectile.ProjectileOrigin.Player, Location.Copy(), Direction.Copy() * 3, Direction.Copy()));
+                ReloadTimer = 0;               
+            }
+
+            isShooting = false;
+        }
         //Entity.configure("Entity" ,"img", "direction", "x", "y", "width", "height", "moving", "state", "speed", "type", "clipX", "clipY", "lifetime", "reloadTime");
+
+
     }
 }

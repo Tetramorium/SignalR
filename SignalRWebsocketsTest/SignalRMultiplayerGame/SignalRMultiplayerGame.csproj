@@ -114,10 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\GameLoop.cs" />
+    <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\HelperClasses\Vector2D.cs" />
     <Compile Include="Model\Keyboard.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Controller\MultiplayerGameHub.cs" />
+    <Compile Include="Model\Projectile.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
